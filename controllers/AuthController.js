@@ -16,14 +16,21 @@ router.post('/RegisterAccount', async (req, res) => {
     const user = new UserModel({
         userId:(numOfDocs+1).toString(),
         userName: req.body.userName,
+        userLastName: req.body.userLastName,
         userEmail: req.body.userEmail,
-        userRole: req.body.userRole,
+        userRole: 'User',
         userPassword: hashedPassword
     })
 
     try {
         const savedUser = await user.save();
-        res.status(200).json(savedUser)
+        const token = jwt.sign(
+          { Id: savedUser._id, userRole: savedUser.userRole, userName: savedUser.userName },
+          process.env.JWT_SECRET,
+          { expiresIn: '1h' }
+      );
+      res.status(200).json({ token });
+
     }
     catch (error) {
         res.status(400).json({message: error.message})

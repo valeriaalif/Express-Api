@@ -93,3 +93,18 @@ router.get('/getUserByEmail', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
+
+//Get by User Nickname Method
+router.get('/getUserByNickname', async (req, res) => {
+    try {
+        const { userNickname } = req.query;
+        const user = await UserModel.findOne({ userNickname });
+        if (user) {
+            res.json(user);
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});

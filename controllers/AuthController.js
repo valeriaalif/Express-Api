@@ -15,6 +15,7 @@ router.post('/RegisterAccount', async (req, res) => {
     const hashedPassword = await bcrypt.hash(req.body.userPassword, 2);
     const user = new UserModel({
         userId:(numOfDocs+1).toString(),
+        userNickname: req.body.userNickname,
         userName: req.body.userName,
         userLastName: req.body.userLastName,
         userEmail: req.body.userEmail,
@@ -25,7 +26,7 @@ router.post('/RegisterAccount', async (req, res) => {
     try {
         const savedUser = await user.save();
         const token = jwt.sign(
-          { Id: savedUser._id, userRole: savedUser.userRole, userName: savedUser.userName },
+          { Id: savedUser._id, userRole: savedUser.userRole, userName: savedUser.userName, userLastName: savedUser.userLastName, userEmail: savedUser.userEmail, userNickname: savedUser.userNickname },
           process.env.JWT_SECRET,
           { expiresIn: '1h' }
       );
@@ -57,7 +58,7 @@ router.post('/Login', async (req, res) => {
             });
           } else {
             // Issue a new token
-            const token = jwt.sign({ Id: user._id,userRole: user.userRole, userName: user.userName}, process.env.JWT_SECRET, {
+            const token = jwt.sign({ Id: user._id,userRole: user.userRole, userName: user.userName, userLastName: user.userLastName, userEmail: user.userEmail, userNickname: user.userNickname }, process.env.JWT_SECRET, {
               expiresIn: '1h',
             });
             res.status(200).json({ token });

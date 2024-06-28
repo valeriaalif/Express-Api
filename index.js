@@ -12,7 +12,8 @@ const authRoutes = require('./controllers/AuthController');
 const userRoutes = require('./controllers/userController');
 const productRoutes = require('./controllers/productController');
 const postsRoutes = require('./controllers/postController');
-const moviesRoutes = require('./controllers/moviesController');
+const booksRoutes = require('./controllers/booksController');
+
 
 mongoose.connect(mongoString);
 const database = mongoose.connection;
@@ -34,7 +35,7 @@ app.use('/api/auth/', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/posts', postsRoutes);
-app.use('/api/movies', moviesRoutes);
+app.use('/api/books', booksRoutes);
 
 app.listen(5000, () => {
     console.log(`Server Started at ${5000}`);
